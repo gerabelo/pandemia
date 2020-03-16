@@ -2,7 +2,9 @@
 # Desenvolvido em 15 de março de 2020
 # por Geraldo Rabelo  geraldo@selvadebits.com.br
 #
-import math
+# As estimativas iniciais de R0 para o SARS-CoV-2 variam de 1,6 a 4,1
+# http://cadernos.ensp.fiocruz.br/csp/artigo/999/emergncia-do-novo-coronavrus-sars-cov-2-e-o-papel-de-uma-vigilncia-nacional-em-sade-oportuna-e-efetiva
+
 
 f=open("covid19.csv","w+")
 f.write("\"weeks\",\"naive\",\"sick\",\"recovered\",\"hospitalized\",\"R0\"\n")
