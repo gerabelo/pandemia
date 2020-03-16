@@ -5,8 +5,8 @@
 # As estimativas iniciais de R0 para o SARS-CoV-2 variam de 1,6 a 4,1
 # http://cadernos.ensp.fiocruz.br/csp/artigo/999/emergncia-do-novo-coronavrus-sars-cov-2-e-o-papel-de-uma-vigilncia-nacional-em-sade-oportuna-e-efetiva
 #
-# 2020: o Amazonas possui aproximadamente 1400 leitos UTI
-# 2020: Manaus possui aproximadamente 2 milhões de habitantes
+# 2020: o estado do Amazonas possui aproximadamente 1400 leitos UTI (particulares e SUS)
+# 2020: a cidade de Manaus possui aproximadamente 2 milhões de habitantes
 
 f=open("covid19.csv","w+")
 f.write("\"weeks\",\"naive\",\"sick\",\"recovered\",\"hospitalized\",\"R0\"\n")
@@ -14,7 +14,7 @@ f.write("\"weeks\",\"naive\",\"sick\",\"recovered\",\"hospitalized\",\"R0\"\n")
 # R0 = [1.6,2.1,2.6,3.1,3.6,4.1] # Os dados observados pelos chineses sugerem um R0 variando de 1,6 a 4,1
 R0 = [1.029,1.6,4.1] # cenários desejável, com contenção e sem contenção
 
-z = 1 # 100% da população
+z = .1 # 10% da população
 
 for q in R0:
     naive         = 2000000*z   # vulneráveis
