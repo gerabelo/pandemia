@@ -8,11 +8,18 @@
 # 2020: o estado do Amazonas possui aproximadamente 1400 leitos UTI (particulares e SUS)
 # 2020: a cidade de Manaus possui aproximadamente 2 milhões de habitantes
 
-f=open("covid19.csv","w+")
-f.write("\"weeks\",\"naive\",\"sick\",\"recovered\",\"hospitalized\",\"R0\"\n")
+import json
 
-# R0 = [1.6,2.1,2.6,3.1,3.6,4.1] # Os dados observados pelos chineses sugerem uma Capacidade de Contágio (R0) variando de 1,6 a 4,1
-R0 = [1.029,1.6,4.1] # cenários desejável, com contenção e sem contenção
+def write_json(data, filename='data.json'): 
+    with open(filename,'w+') as f: 
+        json.dump(data, f, indent=4) 
+
+
+# casos = '{"pior": [{ "week":"","naive":"","sick":"","recovered":"","hospitalized":""}],"melhor":[{"week":"","naive":"","sick":"","recovered":"","hospitalized":""}]}'
+casos = '{"1.24":[],"1.6":[],"4.1":[]}'
+j = json.loads(casos)
+
+R0 = [1.24,1.6,4.1] # cenários desejável, com contenção e sem contenção
 
 z = .1 # 10% da população
 
@@ -53,6 +60,33 @@ for q in R0:
         sick += new_cases
 
         print(week,"\t\t%14d"%naive,"\t\t%14d"%sick,"\t\t%14d"%recovered,"\t\t%13.0f"%hospitalized,"\t\t",q)
-        f.write(f"{week},{naive},{sick},{recovered},{hospitalized},{q}\n")
+        
+        if q == 1.24:
+            j['1.24'].append({
+                "week" : week,
+                "naive" : naive,
+                "sick" : sick,
+                "recovered" : recovered,
+                "hospitalized" : hospitalized
+            })
             
+        elif q == 1.6:
+            j['1.6'].append({
+                "week" : week,
+                "naive" : naive,
+                "sick" : sick,
+                "recovered" : recovered,
+                "hospitalized" : hospitalized
+            })
+        elif q == 4.1:
+            j['4.1'].append({
+                "week" : week,
+                "naive" : naive,
+                "sick" : sick,
+                "recovered" : recovered,
+                "hospitalized" : hospitalized
+            })
+
+        write_json(j)
+
         week += 1
