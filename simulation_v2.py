@@ -1,7 +1,12 @@
 """
-    A COVID-19 simulator 
-    developed by geraldo@selvadebits.com.br
-    at 20-03-2020
+    Uma silumação por contágio
+    desenvolvida por geraldo@selvadebits.com.br
+    em 20-03-2020
+
+    uso: 
+    
+        ./python simulation_v2.py <r>
+        r: restrição da mobilidade variável entre 0 e 99.
 """
 
 import sys,time,argparse
@@ -15,36 +20,28 @@ from matplotlib import animation
 from itertools import combinations
 
 class Person:
-    def __init__(self, x, y, vx, vy, radius=0.01, styles=None, health=None):
-        """Initialize the person's position, velocity, and radius.
-
-        Any key-value pairs passed in the styles dictionary will be passed
-        as arguments to Matplotlib's Circle patch constructor.
-
-        """
+    def __init__(self, x, y, vx, vy, radius=0.01, styles=None, saude=None, mobilidade=1):
+        self.mobilidade = mobilidade
         self.idade = 0
         self.r = np.array((x, y)) #posicao
         self.v = np.array((vx, vy)) #velocidade
         self.radius = radius
-        self.mass = self.radius**2
+        self.massa = self.radius**2
         self.styles = styles
         if not self.styles:
-            # Default circle styles
             self.styles = {'edgecolor': 'b', 'facecolor':'b','fill': False}
 
-        self.health = health
-        if not self.health:
-            self.health = 0
+        self.saude = saude
+        if not self.saude:
+            self.saude = 0
 
 
-    # For convenience, map the components of the person's position and
-    # velocity vector onto the attributes x, y, vx and vy.
     @property
     def x(self):
-        return self.r[0] #retorna a atual posicao X
+        return self.r[0]
     @x.setter
     def x(self, value):
-        self.r[0] = value #seta uma posicao X
+        self.r[0] = value
     @property
     def y(self):
         return self.r[1]
@@ -53,10 +50,10 @@ class Person:
         self.r[1] = value
     @property
     def vx(self):
-        return self.v[0] #retorna a atual velocidade
+        return self.v[0]
     @vx.setter
     def vx(self, value):
-        self.v[0] = value #seta uma velocidade
+        self.v[0] = value
     @property
     def vy(self):
         return self.v[1]
@@ -65,68 +62,51 @@ class Person:
         self.v[1] = value
 
     def overlaps(self, other):
-        """Does the circle of this Person overlap that of other?"""
         return np.hypot(*(self.r - other.r)) < self.radius + other.radius
 
     def draw(self, ax):
-        """Add this Person's Circle patch to the Matplotlib Axes ax."""
         circle = Circle(xy=self.r, radius=self.radius, **self.styles)
         ax.add_patch(circle)
         return circle
 
     def advance(self, dt):
-        """Advance the Person's position forward in time by dt."""
         self.idade += dt*100
         self.r += self.v * dt
         if (self.idade % 30) == 0:
-            if self.health == 1:
+            if self.saude == 1:
                 global doentes
-                if np.random.randint(100) > 4:
+                if doentes < 20:    # supondo uma capacidade hospitalar de 20%
+                    letalidade = 4  # 4%
+                else:
+                    letalidade = 20 # 20%
+                if np.random.randint(100) > letalidade:
                     global recuperados
-                    self.health = -1
+                    self.saude = -1
                     self.styles =  {'edgecolor': 'g', 'facecolor':'g','fill': True}
                     recuperados += 1
                     doentes -= 1
                 else:
                     
                     global mortos
-                    self.health = -2
+                    self.saude = -2
                     self.styles =  {'edgecolor': 'k', 'facecolor':'k','fill': True}
                     self.v = 0
                     mortos += 1
                     doentes -= 1
 
-            if self.health > 0:
-                self.health -= 1
+            if self.saude > 0:
+                self.saude -= 1
 
 
 class Simulation:
-    """A class for a simple hard-circle molecular dynamics simulation.
-    The simulation is carried out on a square domain: 0 <= x < 2, 0 <= y < 2.
-    """
-
     PersonClass = Person
 
     def __init__(self, n, radius=0.01, styles=None, isolation=0):
-        """Initialize the simulation with n Persons with radii radius.
-
-        radius can be a single value or a sequence with n values.
-
-        Any key-value pairs passed in the styles dictionary will be passed
-        as arguments to Matplotlib's Circle patch constructor when drawing
-        the Persons.
-
-        """
-
         self.init_persons(n, radius, styles,isolation)
         self.dt = 0.08
 
     def place_person(self, rad, styles, pId=None, isolation=0):
-        # Choose x, y so that the Person is entirely inside the
-        # domain of the simulation.
         x, y = rad + (2 - 2*rad) * np.random.random(2)
-        # Choose a random velocity (within some reasonable range of
-        # values) for the Person.
         vr = 0.1 * np.sqrt(np.random.random()) + 0.03
         vphi = 2*np.pi * np.random.random()
         vx, vy = vr * np.cos(vphi), vr * np.sin(vphi)
@@ -134,11 +114,9 @@ class Simulation:
             person = self.PersonClass(x, y, vx, vy, rad, {'edgecolor': 'r',  'facecolor':'r', 'fill': True},7)
         else:
             if pId < isolation:
-                person = self.PersonClass(x, y, 0, 0, rad, styles,-2)
+                person = self.PersonClass(x, y, 0, 0, rad, styles,0,0)
             else:
                 person = self.PersonClass(x, y, vx, vy, rad, styles,0)
-        # Check that the Person doesn't overlap one that's already
-        # been placed.
         for p2 in self.persons:
             if p2.overlaps(person):
                 break
@@ -148,13 +126,6 @@ class Simulation:
         return False
 
     def init_persons(self, n, radius, styles=None,isolation=0):
-        """Initialize the n Persons of the simulation.
-
-        Positions and velocities are chosen randomly; radius can be a single
-        value or a sequence with n values.
-
-        """
-
         try:
             iterator = iter(radius)
             assert n == len(radius)
@@ -173,14 +144,8 @@ class Simulation:
             while not self.place_person(rad, styles,i,isolation):
                 pass
 
-    def change_velocities(self, p1, p2):
-        """
-        Persons p1 and p2 have collided elastically: update their
-        velocities.
-
-        """
-        
-        m1, m2 = p1.mass, p2.mass
+    def change_velocities(self, p1, p2):        
+        m1, m2 = p1.massa, p2.massa
         M = m1 + m2
         r1, r2 = p1.r, p2.r
         d = np.linalg.norm(r1 - r2)**2
@@ -189,54 +154,38 @@ class Simulation:
         u2 = v2 - 2*m1 / M * np.dot(v2-v1, r2-r1) / d * (r2 - r1)
         p1.v = u1
         p2.v = u2
-        if p1.health == -2:
+        if p1.saude == -2 or p1.mobilidade == 0:
             p1.v = 0
-        if p2.health == -2:
+        if p2.saude == -2 or p2.mobilidade == 0:
             p2.v = 0
 
-    def change_health(self, p1, p2):
-        """
-        Persons p1 and p2 have contacted one another: update their
-        healthies.
-
-        """
+    def change_saude(self, p1, p2):
         global vulneraveis
         global doentes
 
-        if p1.health > 0 and p2.health == 0:
-            p2.health = 7
+        if p1.saude > 0 and p2.saude == 0 or p2.saude == -3:
+            p2.saude = 7
             p2.styles = {'edgecolor': 'r', 'facecolor': 'r','fill': True}   
             vulneraveis -= 1
             doentes +=1
      
-        elif p2.health > 0 and p1.health == 0:
-            p1.health = 7
+        elif p2.saude > 0 and p1.saude == 0 or p1.saude == -3:
+            p1.saude = 7
             p1.styles = {'edgecolor': 'r', 'facecolor': 'r','fill': True}        
             vulneraveis -= 1
             doentes +=1
 
 
+
     def handle_collisions(self):
-        """Detect and handle any collisions between the Persons.
-
-        When two Persons collide, they do so elastically: their velocities
-        change such that both energy and momentum are conserved.
-
-        """ 
-
-        # We're going to need a sequence of all of the pairs of persons when
-        # we are detecting collisions. combinations generates pairs of indexes
-        # into the self.persons list of Persons on the fly.
         pairs = combinations(range(self.n), 2)
         for i,j in pairs:
             if self.persons[i].overlaps(self.persons[j]):
-                if self.persons[j].health > 0 or self.persons[i].health > 0:
-                    self.change_health(self.persons[i],self.persons[j])
+                if self.persons[j].saude > 0 or self.persons[i].saude > 0:
+                    self.change_saude(self.persons[i],self.persons[j])
                 self.change_velocities(self.persons[i], self.persons[j])
 
     def handle_boundary_collisions(self, p):
-        """Bounce the persons off the walls elastically."""
-
         if p.x - p.radius < 0:
             p.x = p.radius
             p.vx = -p.vx
@@ -255,7 +204,6 @@ class Simulation:
         pass
 
     def advance_animation(self):
-        """Advance the animation by dt, returning the updated Circles list."""        
         global era
         global pause
         
@@ -263,11 +211,13 @@ class Simulation:
     
         global doentes
         if doentes == 0:
+            timestr = time.strftime("%Y%m%d-%H%M%S")
             pause = True
             self.report()
-            plt.savefig("simulation.png", dpi=150)
-            time.sleep(30)
+            plt.savefig(timestr+".png", dpi=150)
+            time.sleep(3)
             return sys.exit()
+            
         elif (era % 10) == 0:
             global doentes_v
             global recuperados_v
@@ -291,12 +241,12 @@ class Simulation:
             self.handle_boundary_collisions(p)
             self.circles[i].center = p.r
             self.circles[i].styles = p.styles
+
         self.handle_collisions()
         self.apply_forces()
         return self.circles
 
     def advance(self):
-        """Advance the animation by dt."""
         for i, p in enumerate(self.persons):
             p.advance(self.dt)
             self.handle_boundary_collisions(p)
@@ -304,23 +254,16 @@ class Simulation:
         self.apply_forces()
 
     def init(self):
-        """Initialize the Matplotlib animation."""
-
         self.circles = []
         for person in self.persons:
             self.circles.append(person.draw(self.ax))
         return self.circles
 
     def animate(self, i):
-        """The function passed to Matplotlib's FuncAnimation routine."""
-
         self.advance_animation()
         return self.circles
 
     def setup_animation(self):
-        #ax is the box
-        #ax2 is the stacked-area chart
-
         self.fig, self.ax = plt.subplots()
         self.fig2, self.ax2 = plt.subplots()
 
@@ -333,7 +276,7 @@ class Simulation:
         self.ax.xaxis.set_ticks([])
         self.ax.yaxis.set_ticks([])
 
-    def save_or_show_animation(self, anim, save, filename='collision.mp4'):
+    def save_or_show_animation(self, anim, save, filename='covid19.mp4'):
         if save:
             Writer = animation.writers['ffmpeg']
             writer = Writer(fps=5, bitrate=1800,extra_args=["-vcodec", "libx264"])
@@ -342,11 +285,7 @@ class Simulation:
             plt.show()
 
 
-    def do_animation(self, save=False, interval=1, filename='collision.mp4'):
-        """Set up and carry out the animation of the molecular dynamics.
-
-        To save the animation as a MP4 movie, set save=True.
-        """
+    def do_animation(self, save=False, interval=1, filename='covid19.mp4'):
 
         self.setup_animation()
         anim = animation.FuncAnimation(self.fig, self.animate,
@@ -364,10 +303,8 @@ class Simulation:
 
         x = range(1,int(era/10)+1)
 
-        # Make data
         data = pd.DataFrame({'doentes':doentes_v, 'recuperados':recuperados_v,'vulneraveis':vulneraveis_v, 'mortos':mortos_v }, index=x)
  
-        # We need to transform the data from raw data to percentage (fraction)
         data_perc = data.divide(data.sum(axis=1), axis=0)
 
         self.ax2.stackplot(x, data_perc["doentes"],  data_perc["recuperados"], data_perc["vulneraveis"], data_perc["mortos"], labels=['doentes','recuperados','vulneraveis','mortos'],colors=pal)
