@@ -265,7 +265,7 @@ class Simulation:
         if doentes == 0:
             pause = True
             self.report()
-            plt.savefig("simulation.svg", dpi=150)
+            plt.savefig("simulation.png", dpi=150)
             time.sleep(30)
             return sys.exit()
         elif (era % 10) == 0:
@@ -321,9 +321,8 @@ class Simulation:
         #ax is the box
         #ax2 is the stacked-area chart
 
-        # self.fig, (self.ax, self.ax2) = plt.subplots(nrows=2, ncols=1)
-        self.fig, (self.ax, self.ax2) = plt.subplots(1,2)
-        # self.fig2, self.ax2 = plt.subplots()
+        self.fig, self.ax = plt.subplots()
+        self.fig2, self.ax2 = plt.subplots()
 
         for s in ['top','bottom','left','right']:
             self.ax.spines[s].set_linewidth(2)
@@ -339,12 +338,8 @@ class Simulation:
             Writer = animation.writers['ffmpeg']
             writer = Writer(fps=5, bitrate=1800,extra_args=["-vcodec", "libx264"])
             anim.save(filename, writer=writer)
-
-            # anim.save("collision.avi")
-            # anim.save("plot.mp4", fps=10, extra_args=["-vcodec", "libx264"])
         else:
             plt.show()
-            # anim.save("../plot.gif", writer="imagemagick", fps=30, dpi=72)
 
 
     def do_animation(self, save=False, interval=1, filename='collision.mp4'):
@@ -378,8 +373,8 @@ class Simulation:
         self.ax2.stackplot(x, data_perc["doentes"],  data_perc["recuperados"], data_perc["vulneraveis"], data_perc["mortos"], labels=['doentes','recuperados','vulneraveis','mortos'],colors=pal)
         self.ax2.margins(0,0)
 
-        self.fig.canvas.draw()
-        self.fig.canvas.flush_events()
+        self.fig2.canvas.draw()
+        self.fig2.canvas.flush_events()
 
 
 if __name__ == '__main__':

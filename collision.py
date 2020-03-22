@@ -1,22 +1,17 @@
-"""
-    A COVID-19 simulator 
-    developed by geraldo@selvadebits.com.br
-    at 20-03-2020
-"""
-
-import sys,time,argparse
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
-import seaborn as sns
-
 from matplotlib.patches import Circle
 from matplotlib import animation
 from itertools import combinations
 
-class Person:
+# https://python-graph-gallery.com/250-basic-stacked-area-chart/
+# montar varios lado a lado?
+
+class Particle:
+    """A class representing a two-dimensional particle."""
+
     def __init__(self, x, y, vx, vy, radius=0.01, styles=None, health=None):
-        """Initialize the person's position, velocity, and radius.
+        """Initialize the particle's position, velocity, and radius.
 
         Any key-value pairs passed in the styles dictionary will be passed
         as arguments to Matplotlib's Circle patch constructor.
@@ -37,8 +32,20 @@ class Person:
             self.health = 0
 
 
-    # For convenience, map the components of the person's position and
+    # For convenience, map the components of the particle's position and
     # velocity vector onto the attributes x, y, vx and vy.
+    # @property
+    # def health(self):
+    #     return self.health
+    # @health.setter
+    # def health(self,value):
+    #     self.health = value
+    # @property
+    # def styles(self):
+    #     return self.styles
+    # @styles.setter
+    # def styles(self,value):
+    #     self.styles = value
     @property
     def x(self):
         return self.r[0] #retorna a atual posicao X
@@ -65,90 +72,96 @@ class Person:
         self.v[1] = value
 
     def overlaps(self, other):
-        """Does the circle of this Person overlap that of other?"""
+        """Does the circle of this Particle overlap that of other?"""
+        #colidiu?
+        #hypotenuse
         return np.hypot(*(self.r - other.r)) < self.radius + other.radius
 
     def draw(self, ax):
-        """Add this Person's Circle patch to the Matplotlib Axes ax."""
+        """Add this Particle's Circle patch to the Matplotlib Axes ax."""
+
         circle = Circle(xy=self.r, radius=self.radius, **self.styles)
         ax.add_patch(circle)
         return circle
 
     def advance(self, dt):
-        """Advance the Person's position forward in time by dt."""
+        """Advance the Particle's position forward in time by dt."""
+            
         self.idade += dt*100
         self.r += self.v * dt
-        if (self.idade % 30) == 0:
+        # print(self.idade)
+        if (self.idade % 20) == 0:
             if self.health == 1:
                 global doentes
                 if np.random.randint(100) > 4:
-                    global recuperados
                     self.health = -1
                     self.styles =  {'edgecolor': 'g', 'facecolor':'g','fill': True}
-                    recuperados += 1
                     doentes -= 1
+                    # print(doentes)
                 else:
-                    
-                    global mortos
                     self.health = -2
                     self.styles =  {'edgecolor': 'k', 'facecolor':'k','fill': True}
                     self.v = 0
-                    mortos += 1
                     doentes -= 1
-
+                    # print(doentes)
             if self.health > 0:
+                # print(self.health)
                 self.health -= 1
-
 
 class Simulation:
     """A class for a simple hard-circle molecular dynamics simulation.
-    The simulation is carried out on a square domain: 0 <= x < 2, 0 <= y < 2.
+
+    The simulation is carried out on a square domain: 0 <= x < 1, 0 <= y < 1.
+
     """
 
-    PersonClass = Person
+    ParticleClass = Particle
 
-    def __init__(self, n, radius=0.01, styles=None, isolation=0):
-        """Initialize the simulation with n Persons with radii radius.
+    # doentes = 1
+    # recuperados = 0
+    # vulneraveis = 99
+    # mortos = 0
+
+    def __init__(self, n, radius=0.01, styles=None):
+        """Initialize the simulation with n Particles with radii radius.
 
         radius can be a single value or a sequence with n values.
 
         Any key-value pairs passed in the styles dictionary will be passed
         as arguments to Matplotlib's Circle patch constructor when drawing
-        the Persons.
+        the Particles.
 
         """
 
-        self.init_persons(n, radius, styles,isolation)
-        self.dt = 0.08
+        self.init_particles(n, radius, styles)
+        self.dt = 0.03
+        self.tempo = 0
 
-    def place_person(self, rad, styles, pId=None, isolation=0):
-        # Choose x, y so that the Person is entirely inside the
+    def place_particle(self, rad, styles, sick=None):
+        # Choose x, y so that the Particle is entirely inside the
         # domain of the simulation.
         x, y = rad + (2 - 2*rad) * np.random.random(2)
         # Choose a random velocity (within some reasonable range of
-        # values) for the Person.
-        vr = 0.1 * np.sqrt(np.random.random()) + 0.03
+        # values) for the Particle.
+        vr = 0.1 * np.sqrt(np.random.random()) + 0.05
         vphi = 2*np.pi * np.random.random()
         vx, vy = vr * np.cos(vphi), vr * np.sin(vphi)
-        if pId == 1:
-            person = self.PersonClass(x, y, vx, vy, rad, {'edgecolor': 'r',  'facecolor':'r', 'fill': True},7)
+        if sick == 1:
+            particle = self.ParticleClass(x, y, vx, vy, rad, {'edgecolor': 'r',  'facecolor':'r', 'fill': True},7)
         else:
-            if pId < isolation:
-                person = self.PersonClass(x, y, 0, 0, rad, styles,-2)
-            else:
-                person = self.PersonClass(x, y, vx, vy, rad, styles,0)
-        # Check that the Person doesn't overlap one that's already
+            particle = self.ParticleClass(x, y, vx, vy, rad, styles,0)
+        # Check that the Particle doesn't overlap one that's already
         # been placed.
-        for p2 in self.persons:
-            if p2.overlaps(person):
+        for p2 in self.particles:
+            if p2.overlaps(particle):
                 break
         else:
-            self.persons.append(person)
+            self.particles.append(particle)
             return True
         return False
 
-    def init_persons(self, n, radius, styles=None,isolation=0):
-        """Initialize the n Persons of the simulation.
+    def init_particles(self, n, radius, styles=None):
+        """Initialize the n Particles of the simulation.
 
         Positions and velocities are chosen randomly; radius can be a single
         value or a sequence with n values.
@@ -167,15 +180,15 @@ class Simulation:
             radius = r_gen(n, radius)
 
         self.n = n
-        self.persons = []
+        self.particles = []
         for i, rad in enumerate(radius):
-            # Try to find a random initial position for this person.
-            while not self.place_person(rad, styles,i,isolation):
+            # Try to find a random initial position for this particle.
+            while not self.place_particle(rad, styles,i):
                 pass
 
     def change_velocities(self, p1, p2):
         """
-        Persons p1 and p2 have collided elastically: update their
+        Particles p1 and p2 have collided elastically: update their
         velocities.
 
         """
@@ -196,7 +209,7 @@ class Simulation:
 
     def change_health(self, p1, p2):
         """
-        Persons p1 and p2 have contacted one another: update their
+        Particles p1 and p2 have contacted one another: update their
         healthies.
 
         """
@@ -217,25 +230,25 @@ class Simulation:
 
 
     def handle_collisions(self):
-        """Detect and handle any collisions between the Persons.
+        """Detect and handle any collisions between the Particles.
 
-        When two Persons collide, they do so elastically: their velocities
+        When two Particles collide, they do so elastically: their velocities
         change such that both energy and momentum are conserved.
 
         """ 
 
-        # We're going to need a sequence of all of the pairs of persons when
+        # We're going to need a sequence of all of the pairs of particles when
         # we are detecting collisions. combinations generates pairs of indexes
-        # into the self.persons list of Persons on the fly.
+        # into the self.particles list of Particles on the fly.
         pairs = combinations(range(self.n), 2)
         for i,j in pairs:
-            if self.persons[i].overlaps(self.persons[j]):
-                if self.persons[j].health > 0 or self.persons[i].health > 0:
-                    self.change_health(self.persons[i],self.persons[j])
-                self.change_velocities(self.persons[i], self.persons[j])
+            if self.particles[i].overlaps(self.particles[j]):
+                if self.particles[j].health > 0 or self.particles[i].health > 0:
+                    self.change_health(self.particles[i],self.particles[j])
+                self.change_velocities(self.particles[i], self.particles[j])
 
     def handle_boundary_collisions(self, p):
-        """Bounce the persons off the walls elastically."""
+        """Bounce the particles off the walls elastically."""
 
         if p.x - p.radius < 0:
             p.x = p.radius
@@ -251,42 +264,18 @@ class Simulation:
             p.vy = -p.vy
 
     def apply_forces(self):
-        """Override this method to accelerate the persons."""
+        """Override this method to accelerate the particles."""
         pass
 
     def advance_animation(self):
-        """Advance the animation by dt, returning the updated Circles list."""        
-        global era
-        global pause
-        
-        era += 1
-    
+        """Advance the animation by dt, returning the updated Circles list."""
+
         global doentes
         if doentes == 0:
-            pause = True
-            self.report()
-            plt.savefig("simulation.svg", dpi=150)
-            time.sleep(30)
-            return sys.exit()
-        elif (era % 10) == 0:
-            global doentes_v
-            global recuperados_v
-            global mortos_v
-            global vulneraveis_v
-            
-            # global doentes
-            global recuperados
-            global mortos
-            global vulneraveis
+            return self.circles
+            # self.event_source.stop()
 
-            doentes_v.append(doentes)
-            recuperados_v.append(recuperados)
-            mortos_v.append(mortos)
-            vulneraveis_v.append(vulneraveis)
-
-            self.report()
-
-        for i, p in enumerate(self.persons):
+        for i, p in enumerate(self.particles):
             p.advance(self.dt)
             self.handle_boundary_collisions(p)
             self.circles[i].center = p.r
@@ -297,7 +286,7 @@ class Simulation:
 
     def advance(self):
         """Advance the animation by dt."""
-        for i, p in enumerate(self.persons):
+        for i, p in enumerate(self.particles):
             p.advance(self.dt)
             self.handle_boundary_collisions(p)
         self.handle_collisions()
@@ -307,8 +296,8 @@ class Simulation:
         """Initialize the Matplotlib animation."""
 
         self.circles = []
-        for person in self.persons:
-            self.circles.append(person.draw(self.ax))
+        for particle in self.particles:
+            self.circles.append(particle.draw(self.ax))
         return self.circles
 
     def animate(self, i):
@@ -318,17 +307,10 @@ class Simulation:
         return self.circles
 
     def setup_animation(self):
-        #ax is the box
-        #ax2 is the stacked-area chart
-
-        # self.fig, (self.ax, self.ax2) = plt.subplots(nrows=2, ncols=1)
-        self.fig, (self.ax, self.ax2) = plt.subplots(1,2)
-        # self.fig2, self.ax2 = plt.subplots()
-
+        self.fig, self.ax = plt.subplots()
         for s in ['top','bottom','left','right']:
             self.ax.spines[s].set_linewidth(2)
-
-        self.ax.set_aspect(1)
+        self.ax.set_aspect('equal', 'box')
         self.ax.set_xlim(0, 2)
         self.ax.set_ylim(0, 2)
         self.ax.xaxis.set_ticks([])
@@ -337,15 +319,10 @@ class Simulation:
     def save_or_show_animation(self, anim, save, filename='collision.mp4'):
         if save:
             Writer = animation.writers['ffmpeg']
-            writer = Writer(fps=5, bitrate=1800,extra_args=["-vcodec", "libx264"])
+            writer = Writer(fps=10, bitrate=1800)
             anim.save(filename, writer=writer)
-
-            # anim.save("collision.avi")
-            # anim.save("plot.mp4", fps=10, extra_args=["-vcodec", "libx264"])
         else:
             plt.show()
-            # anim.save("../plot.gif", writer="imagemagick", fps=30, dpi=72)
-
 
     def do_animation(self, save=False, interval=1, filename='collision.mp4'):
         """Set up and carry out the animation of the molecular dynamics.
@@ -355,53 +332,17 @@ class Simulation:
 
         self.setup_animation()
         anim = animation.FuncAnimation(self.fig, self.animate,
-                init_func=self.init, frames=5, interval=interval, repeat=True, blit=True)
+                init_func=self.init, frames=5, interval=interval, blit=True)
         self.save_or_show_animation(anim, save, filename)
-
-    def report(self):
-        global era
-        global doentes_v
-        global recuperados_v
-        global mortos_v
-        global vulneraveis_v
-
-        pal = ["#ff0000", "#00ff00", "#ffffff", "#000000"]
-
-        x = range(1,int(era/10)+1)
-
-        # Make data
-        data = pd.DataFrame({'doentes':doentes_v, 'recuperados':recuperados_v,'vulneraveis':vulneraveis_v, 'mortos':mortos_v }, index=x)
- 
-        # We need to transform the data from raw data to percentage (fraction)
-        data_perc = data.divide(data.sum(axis=1), axis=0)
-
-        self.ax2.stackplot(x, data_perc["doentes"],  data_perc["recuperados"], data_perc["vulneraveis"], data_perc["mortos"], labels=['doentes','recuperados','vulneraveis','mortos'],colors=pal)
-        self.ax2.margins(0,0)
-
-        self.fig.canvas.draw()
-        self.fig.canvas.flush_events()
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='COVID-19 Simulação')
-    parser.add_argument('mob', help='Mobilidade') # valor entre 0 e 100
-    args = parser.parse_args()
-
-    pause = False
-    era = 1
-
     doentes = 1
     vulneraveis = 99
     recuperados = 0
     mortos = 0
 
-    doentes_v = []
-    recuperados_v = []
-    mortos_v = []
-    vulneraveis_v = []
-
-
     radii = np.random.random(vulneraveis+doentes)*0.03+0.01
     styles = {'edgecolor': 'C0', 'linewidth': 2, 'fill': None}
-    sim = Simulation(vulneraveis+doentes, radii, styles,int(args.mob))
+    sim = Simulation(vulneraveis+doentes, radii, styles)
     sim.do_animation(save=False)
