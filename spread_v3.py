@@ -40,6 +40,8 @@ if __name__ == '__main__':
     parser.add_argument('R0', help='coeficiente de contágio sem intervenção')
     parser.add_argument('Rt', help='coeficiente de contágio desejado')
     parser.add_argument('H', help='capacidade hospitalar')
+    parser.add_argument('O', help='output file')
+
     args = parser.parse_args()
 
     t1 = int(args.t1)
@@ -47,6 +49,7 @@ if __name__ == '__main__':
     R0 = float(args.R0)
     Rt = float(args.Rt)
     capacidade_hospitalar = int(args.H)
+    output = args.O
 
     z = .1 # limite de contágio da população. variar de .01 a 1
     vulneraveis     = 2000000*z   # vulneráveis
@@ -167,4 +170,4 @@ if __name__ == '__main__':
 
         t += 1
 
-    write_json(j)
+    write_json(j,output)

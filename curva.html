@@ -6,40 +6,40 @@
   color: rgb(155, 155, 155);
 }
 
-.line3 {
-  fill: none;
-  stroke: rgb(155, 155, 155);
-  stroke-width: 2px;
-}
-
 .linha_graves {
-  fill: #888;
+  /* fill: #888; */
+  fill: none;
   stroke: rgb(81, 81, 81);
   stroke-width: 2px;
 }
 
 .linha_recuperados {
-  fill: #9F9;
+  fill: #99F;
   /* fill: none; */
-  stroke: rgb(0, 228, 0);
+  stroke: rgb(0, 0, 228);
   stroke-width: 2px;
 }
 
 .linha_doentes {
   fill: #F99;
+  /* fill: none; */
   stroke: rgb(255, 19, 31);
   stroke-width: 2px;
 }
 
 .linha_noaction {
   fill: #F99;
+  /* fill: none; */
   stroke: rgb(255, 19, 31);
+  /* alpha: .5; */
   stroke-width: 2px;
 }
 
 .linha_action {
-  fill: #9F9;
-  stroke: rgb(0, 228, 0);
+  fill: #99F;
+  /* fill: none; */
+  stroke: rgb(0, 0, 228);
+  /* alpha: .5; */
   stroke-width: 2px;
 }
 
@@ -155,19 +155,19 @@ function draw(data) {
       .attr("d", linha_leitos);      
 
   // Add labels
-  svg.append("text")
-    .style('font-family','Arial, Helvetica, sans-serif')
-    .style('font-size','20px')
-    .style('fill', '#000')
-    .attr("dx", 300)
-    .attr("dy", 0)
-    .text("Curvas de Contágio por Coronavírus");  
+//   svg.append("text")
+//     .style('font-family','Arial, Helvetica, sans-serif')
+//     .style('font-size','20px')
+//     .style('fill', '#000')
+//     .attr("dx", 300)
+//     .attr("dy", 0)
+//     .text("Curvas de Contágio por Coronavírus");  
   
   svg.append("text")
     .style('fill', '#000')
     // .attr("dx", 0)
     // .attr("dy", 300)
-    .text("Número de casos graves")
+    .text("Número de casos")
     .attr("transform", "translate(-50,300) rotate(270)");
   
   svg.append("text")
