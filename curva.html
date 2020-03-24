@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style> /* set the CSS */
+
+.label {
+  color: rgb(155, 155, 155);
+}
+
+.line3 {
+  fill: none;
+  stroke: rgb(155, 155, 155);
+  stroke-width: 2px;
+}
+
+.linha_graves {
+  fill: #888;
+  stroke: rgb(81, 81, 81);
+  stroke-width: 2px;
+}
+
+.linha_recuperados {
+  fill: #9F9;
+  /* fill: none; */
+  stroke: rgb(0, 228, 0);
+  stroke-width: 2px;
+}
+
+.linha_doentes {
+  fill: #F99;
+  stroke: rgb(255, 19, 31);
+  stroke-width: 2px;
+}
+
+.linha_noaction {
+  fill: #F99;
+  stroke: rgb(255, 19, 31);
+  stroke-width: 2px;
+}
+
+.linha_action {
+  fill: #9F9;
+  stroke: rgb(0, 228, 0);
+  stroke-width: 2px;
+}
+
+</style>
+<body>
+
+<!-- load the d3.js library -->    	
+<script src="d3.v4.min.js"></script>
+<script>
+
+// set the dimensions and margins of the graph
+var margin = {top: 20, right: 20, bottom: 50, left: 100},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+// parse the Week / time
+// var parseTime = d3.timeParse("%Y");
+
+// set the ranges
+var x = d3.scaleLinear().range([0, width]);
+var y = d3.scaleLinear().range([height, 0]);
+
+// define the line
+var linha_graves = d3.line()
+  .curve(d3.curveBasis)
+    // .interpolate("linear")
+    .x(function(d) { return x(d.t); })
+    .y(function(d) { return y(d.graves); });
+
+var linha_recuperados = d3.line()
+  .curve(d3.curveBasis)
+    // .interpolate("linear")
+    .x(function(d) { return x(d.t); })
+    .y(function(d) { return y(d.recuperados); });    
+
+var linha_doentes = d3.line()
+  .curve(d3.curveBasis)
+    // .interpolate("linear")
+    .x(function(d) { return x(d.t); })
+    .y(function(d) { return y(d.doentes); });    
+
+var linha_noaction = d3.line()
+  .curve(d3.curveBasis)
+    // .interpolate("linear")
+    .x(function(d) { return x(d.t); })
+    .y(function(d) { return y(d.recuperados); });
+
+var linha_mortos = d3.line()
+  .curve(d3.curveBasis)
+    // .interpolate("linear")
+    .x(function(d) { return x(d.t); })
+    .y(function(d) { return y(d.mortos); });    
+
+
+var linha_leitos = d3.line().curve(d3.curveBasis)
+    .x(function(d) { return x(d[0]); })
+    .y(function(d) { return y(1400); });
+
+// append the svg obgect to the body of the page
+// appends a 'group' element to 'svg'
+// moves the 'group' element to the top left margin
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+function draw(data) {
+
+  var data0 = data["action"];
+  var data1 = data["noaction"];
+//   console.log(data0)
+
+  var leitos_y = [];
+  for (var i = 0;i < 55;i++) {
+    leitos_y.push(1400);
+  }
+
+  var leitos_x = d3.range(55);
+
+  var leitos = [leitos_x,leitos_y]
+   
+  // Scale the range of the data
+  x.domain(d3.extent(data0, function(d) { return d.t; }));
+  y.domain([0, d3.max(data1, function(d) {
+	  return Math.max(0,d.recuperados); })]);
+
+  // Add the linha_graves path.
+  svg.append("path")
+      .data([data0])
+      .attr("class", "linha_graves")
+      .attr("d", linha_graves(data0));
+      // .transition()
+      //   .duration(2000)
+      //   .ease("linear")
+      //   .attr("stroke-dashoffset", data0.length);
+
+  svg.append("path")
+      .data([data1])
+      .attr("class", "linha_noaction")
+      .attr("d", linha_doentes(data1));
+
+  svg.append("path")
+      .data([data0])
+      .attr("class", "linha_action")
+      .attr("d", linha_doentes(data0));
+
+  svg.append("path")
+      .data([leitos])
+      .attr("class", "line3")
+      .style("stroke-dasharray", ("3, 3"))
+      .attr("d", linha_leitos);      
+
+  // Add labels
+  svg.append("text")
+    .style('font-family','Arial, Helvetica, sans-serif')
+    .style('font-size','20px')
+    .style('fill', '#000')
+    .attr("dx", 300)
+    .attr("dy", 0)
+    .text("Curvas de Contágio por Coronavírus");  
+  
+  svg.append("text")
+    .style('fill', '#000')
+    // .attr("dx", 0)
+    // .attr("dy", 300)
+    .text("Número de casos graves")
+    .attr("transform", "translate(-50,300) rotate(270)");
+  
+  svg.append("text")
+    .style('fill', '#000')
+    .attr("dx", 230)
+    .attr("dy", 470)
+    .text("Tempo em semanas a partir do primeiro contágio não controlado");
+  
+//   svg.append("text")
+//     .style('fill', '#999')
+//     .attr("dx", 200)
+//     .attr("dy", 340)
+//     .text("Atual capacidade do Sistema de Saúde do Amazonas");  
+
+//   svg.append("text")
+//     .style('fill', '#F00')
+//     .attr("dx", 100)
+//     .attr("dy", 90)
+//     .text("Sem medidas de contenção");
+  
+
+  // Add the X Axis
+  svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+  // Add the Y Axis
+  svg.append("g")
+      .call(d3.axisLeft(y));
+  }
+
+// Get the data
+d3.json("data.json", function(error, data) {
+  if (error) throw error;  
+  // trigger render
+  draw(data);
+
+});
+
+</script>
+</body>

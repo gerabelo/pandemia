@@ -1,694 +1,342 @@
 {
-    "1.24": [
+    "action": [
         {
-            "week": 0,
-            "naive": 200000.0,
-            "sick": 1,
-            "recovered": 0,
-            "hospitalized": 0
+            "t": 0,
+            "vulneraveis": 200000.0,
+            "doentes": 4.1,
+            "recuperados": 1,
+            "graves": 0,
+            "mortos": 0
         },
         {
-            "week": 1,
-            "naive": 200000.0,
-            "sick": 1,
-            "recovered": 1,
-            "hospitalized": 0
+            "t": 1,
+            "vulneraveis": 199999.0,
+            "doentes": 16.909999999999997,
+            "recuperados": 4,
+            "graves": 0,
+            "mortos": 0
         },
         {
-            "week": 2,
-            "naive": 199999.0,
-            "sick": 1,
-            "recovered": 1,
-            "hospitalized": 0
+            "t": 2,
+            "vulneraveis": 199995.0,
+            "doentes": 70.24099999999997,
+            "recuperados": 16,
+            "graves": 1,
+            "mortos": 0
         },
         {
-            "week": 3,
-            "naive": 199998.0,
-            "sick": 2,
-            "recovered": 1,
-            "hospitalized": 0
+            "t": 3,
+            "vulneraveis": 199979.0,
+            "doentes": 291.22909999999985,
+            "recuperados": 67,
+            "graves": 3,
+            "mortos": 1
         },
         {
-            "week": 4,
-            "naive": 199997.0,
-            "sick": 2,
-            "recovered": 2,
-            "hospitalized": 0
+            "t": 4,
+            "vulneraveis": 199912.0,
+            "doentes": 1208.268409999999,
+            "recuperados": 277,
+            "graves": 13,
+            "mortos": 3
         },
         {
-            "week": 5,
-            "naive": 199995.0,
-            "sick": 2,
-            "recovered": 2,
-            "hospitalized": 0
+            "t": 5,
+            "vulneraveis": 199635.0,
+            "doentes": 1510.1905019999977,
+            "recuperados": 1148,
+            "graves": 51,
+            "mortos": 12
         },
         {
-            "week": 6,
-            "naive": 199993.0,
-            "sick": 3,
-            "recovered": 2,
-            "hospitalized": 0
+            "t": 6,
+            "vulneraveis": 198487.0,
+            "doentes": 1887.4191043999947,
+            "recuperados": 1435,
+            "graves": 4,
+            "mortos": 84
         },
         {
-            "week": 7,
-            "naive": 199991.0,
-            "sick": 4,
-            "recovered": 3,
-            "hospitalized": 0
+            "t": 7,
+            "vulneraveis": 197052.0,
+            "doentes": 2359.322029679988,
+            "recuperados": 1793,
+            "graves": 3,
+            "mortos": 175
         },
         {
-            "week": 8,
-            "naive": 199988.0,
-            "sick": 5,
-            "recovered": 4,
-            "hospitalized": 0
+            "t": 8,
+            "vulneraveis": 195259.0,
+            "doentes": 2949.508465295974,
+            "recuperados": 2241,
+            "graves": 5,
+            "mortos": 288
         },
         {
-            "week": 9,
-            "naive": 199984.0,
-            "sick": 6,
-            "recovered": 5,
-            "hospitalized": 0
+            "t": 9,
+            "vulneraveis": 193018.0,
+            "doentes": 3686.9186236511428,
+            "recuperados": 2802,
+            "graves": 5,
+            "mortos": 430
         },
         {
-            "week": 10,
-            "naive": 199979.0,
-            "sick": 7,
-            "recovered": 6,
-            "hospitalized": 0
+            "t": 10,
+            "vulneraveis": 190216.0,
+            "doentes": 4608.220972032514,
+            "recuperados": 3503,
+            "graves": 7,
+            "mortos": 607
         },
         {
-            "week": 11,
-            "naive": 199973.0,
-            "sick": 9,
-            "recovered": 7,
-            "hospitalized": 0
+            "t": 11,
+            "vulneraveis": 186713.0,
+            "doentes": 5760.08613847153,
+            "recuperados": 4378,
+            "graves": 9,
+            "mortos": 828
         },
         {
-            "week": 12,
-            "naive": 199966.0,
-            "sick": 11,
-            "recovered": 9,
-            "hospitalized": 0
+            "t": 12,
+            "vulneraveis": 182335.0,
+            "doentes": 7200.189504637366,
+            "recuperados": 5472,
+            "graves": 12,
+            "mortos": 1104
         },
         {
-            "week": 13,
-            "naive": 199957.0,
-            "sick": 14,
-            "recovered": 10,
-            "hospitalized": 1
+            "t": 13,
+            "vulneraveis": 176863.0,
+            "doentes": 9000.416910202202,
+            "recuperados": 6840,
+            "graves": 14,
+            "mortos": 1450
         },
         {
-            "week": 14,
-            "naive": 199947.0,
-            "sick": 17,
-            "recovered": 13,
-            "hospitalized": 1
+            "t": 14,
+            "vulneraveis": 170023.0,
+            "doentes": 11250.917202444845,
+            "recuperados": 8550,
+            "graves": 18,
+            "mortos": 1882
         },
         {
-            "week": 15,
-            "naive": 199934.0,
-            "sick": 21,
-            "recovered": 16,
-            "hospitalized": 1
+            "t": 15,
+            "vulneraveis": 161473.0,
+            "doentes": 14064.01784537866,
+            "recuperados": 10688,
+            "graves": 23,
+            "mortos": 2422
         },
         {
-            "week": 16,
-            "naive": 199918.0,
-            "sick": 26,
-            "recovered": 20,
-            "hospitalized": 1
+            "t": 16,
+            "vulneraveis": 150785.0,
+            "doentes": 17579.839259833047,
+            "recuperados": 13361,
+            "graves": 28,
+            "mortos": 3097
         },
         {
-            "week": 17,
-            "naive": 199898.0,
-            "sick": 32,
-            "recovered": 25,
-            "hospitalized": 0
+            "t": 17,
+            "vulneraveis": 137424.0,
+            "doentes": 21974.6463716327,
+            "recuperados": 16701,
+            "graves": 35,
+            "mortos": 3941
         },
         {
-            "week": 18,
-            "naive": 199873.0,
-            "sick": 41,
-            "recovered": 30,
-            "hospitalized": 1
+            "t": 18,
+            "vulneraveis": 120723.0,
+            "doentes": 27468.222017591943,
+            "recuperados": 20876,
+            "graves": 44,
+            "mortos": 4996
         },
         {
-            "week": 19,
-            "naive": 199843.0,
-            "sick": 50,
-            "recovered": 39,
-            "hospitalized": 1
+            "t": 19,
+            "vulneraveis": 99847.0,
+            "doentes": 34335.088438702274,
+            "recuperados": 26095,
+            "graves": 55,
+            "mortos": 6314
         },
         {
-            "week": 20,
-            "naive": 199804.0,
-            "sick": 62,
-            "recovered": 48,
-            "hospitalized": 1
+            "t": 20,
+            "vulneraveis": 73752.0,
+            "doentes": 42919.194565145,
+            "recuperados": 32618,
+            "graves": 69,
+            "mortos": 7962
         },
         {
-            "week": 21,
-            "naive": 199756.0,
-            "sick": 77,
-            "recovered": 59,
-            "hospitalized": 2
+            "t": 21,
+            "vulneraveis": 41134.0,
+            "doentes": 53649.228043319,
+            "recuperados": 40773,
+            "graves": 86,
+            "mortos": 10022
         },
         {
-            "week": 22,
-            "naive": 199697.0,
-            "sick": 96,
-            "recovered": 73,
-            "hospitalized": 2
+            "t": 22,
+            "vulneraveis": 361.0,
+            "doentes": 43816.228043319,
+            "recuperados": 50967,
+            "graves": 107,
+            "mortos": 12597
         },
         {
-            "week": 23,
-            "naive": 199624.0,
-            "sick": 119,
-            "recovered": 91,
-            "hospitalized": 3
+            "t": 23,
+            "vulneraveis": 0,
+            "doentes": 2552.2280433190026,
+            "recuperados": 41625,
+            "graves": 0,
+            "mortos": 15816
         },
         {
-            "week": 24,
-            "naive": 199533.0,
-            "sick": 147,
-            "recovered": 113,
-            "hospitalized": 3
+            "t": 24,
+            "vulneraveis": 0,
+            "doentes": 127.22804331900261,
+            "recuperados": 2425,
+            "graves": 0,
+            "mortos": 18445
         },
         {
-            "week": 25,
-            "naive": 199420.0,
-            "sick": 182,
-            "recovered": 140,
-            "hospitalized": 4
+            "t": 25,
+            "vulneraveis": 0,
+            "doentes": 6.228043319002609,
+            "recuperados": 121,
+            "graves": 0,
+            "mortos": 18522
         },
         {
-            "week": 26,
-            "naive": 199280.0,
-            "sick": 226,
-            "recovered": 173,
-            "hospitalized": 5
-        },
-        {
-            "week": 27,
-            "naive": 199107.0,
-            "sick": 280,
-            "recovered": 215,
-            "hospitalized": 6
-        },
-        {
-            "week": 28,
-            "naive": 198892.0,
-            "sick": 347,
-            "recovered": 266,
-            "hospitalized": 8
-        },
-        {
-            "week": 29,
-            "naive": 198626.0,
-            "sick": 430,
-            "recovered": 330,
-            "hospitalized": 9
-        },
-        {
-            "week": 30,
-            "naive": 198296.0,
-            "sick": 534,
-            "recovered": 408,
-            "hospitalized": 12
-        },
-        {
-            "week": 31,
-            "naive": 197888.0,
-            "sick": 662,
-            "recovered": 507,
-            "hospitalized": 15
-        },
-        {
-            "week": 32,
-            "naive": 197381.0,
-            "sick": 820,
-            "recovered": 629,
-            "hospitalized": 18
-        },
-        {
-            "week": 33,
-            "naive": 196752.0,
-            "sick": 1017,
-            "recovered": 779,
-            "hospitalized": 22
-        },
-        {
-            "week": 34,
-            "naive": 195973.0,
-            "sick": 1261,
-            "recovered": 966,
-            "hospitalized": 27
-        },
-        {
-            "week": 35,
-            "naive": 195007.0,
-            "sick": 1564,
-            "recovered": 1198,
-            "hospitalized": 34
-        },
-        {
-            "week": 36,
-            "naive": 193809.0,
-            "sick": 1939,
-            "recovered": 1486,
-            "hospitalized": 42
-        },
-        {
-            "week": 37,
-            "naive": 192323.0,
-            "sick": 2405,
-            "recovered": 1842,
-            "hospitalized": 52
-        },
-        {
-            "week": 38,
-            "naive": 190481.0,
-            "sick": 2982,
-            "recovered": 2285,
-            "hospitalized": 64
-        },
-        {
-            "week": 39,
-            "naive": 188196.0,
-            "sick": 3697,
-            "recovered": 2833,
-            "hospitalized": 80
-        },
-        {
-            "week": 40,
-            "naive": 185363.0,
-            "sick": 4585,
-            "recovered": 3512,
-            "hospitalized": 99
-        },
-        {
-            "week": 41,
-            "naive": 181851.0,
-            "sick": 5685,
-            "recovered": 4356,
-            "hospitalized": 123
-        },
-        {
-            "week": 42,
-            "naive": 177495.0,
-            "sick": 7049,
-            "recovered": 5401,
-            "hospitalized": 152
-        },
-        {
-            "week": 43,
-            "naive": 172094.0,
-            "sick": 8741,
-            "recovered": 6697,
-            "hospitalized": 188
-        },
-        {
-            "week": 44,
-            "naive": 165397.0,
-            "sick": 10839,
-            "recovered": 8304,
-            "hospitalized": 234
-        },
-        {
-            "week": 45,
-            "naive": 157093.0,
-            "sick": 13441,
-            "recovered": 10297,
-            "hospitalized": 290
-        },
-        {
-            "week": 46,
-            "naive": 146796.0,
-            "sick": 16667,
-            "recovered": 12769,
-            "hospitalized": 360
-        },
-        {
-            "week": 47,
-            "naive": 134027.0,
-            "sick": 20666,
-            "recovered": 15834,
-            "hospitalized": 446
-        },
-        {
-            "week": 48,
-            "naive": 118193.0,
-            "sick": 25626,
-            "recovered": 19633,
-            "hospitalized": 553
-        },
-        {
-            "week": 49,
-            "naive": 98560.0,
-            "sick": 31777,
-            "recovered": 24345,
-            "hospitalized": 686
-        },
-        {
-            "week": 50,
-            "naive": 74215.0,
-            "sick": 39404,
-            "recovered": 30188,
-            "hospitalized": 851
-        },
-        {
-            "week": 51,
-            "naive": 44027.0,
-            "sick": 48860,
-            "recovered": 37434,
-            "hospitalized": 1055
-        },
-        {
-            "week": 52,
-            "naive": 6593.0,
-            "sick": 46470.0,
-            "recovered": 46417,
-            "hospitalized": 1309
-        },
-        {
-            "week": 53,
-            "naive": 0,
-            "sick": 8917.0,
-            "recovered": 44146,
-            "hospitalized": 917
-        },
-        {
-            "week": 54,
-            "naive": 0,
-            "sick": 446.0,
-            "recovered": 8471,
-            "hospitalized": 0
+            "t": 26,
+            "vulneraveis": 0,
+            "doentes": 0.22804331900260877,
+            "recuperados": 6,
+            "graves": 0,
+            "mortos": 18526
         }
     ],
-    "1.6": [
+    "noaction": [
         {
-            "week": 0,
-            "naive": 200000.0,
-            "sick": 1,
-            "recovered": 0,
-            "hospitalized": 0
+            "t": 0,
+            "vulneraveis": 200000.0,
+            "doentes": 4.1,
+            "recuperados": 1,
+            "graves": 0,
+            "mortos": 0
         },
         {
-            "week": 1,
-            "naive": 200000.0,
-            "sick": 1,
-            "recovered": 1,
-            "hospitalized": 0
+            "t": 1,
+            "vulneraveis": 199999.0,
+            "doentes": 16.909999999999997,
+            "recuperados": 4,
+            "graves": 0,
+            "mortos": 0
         },
         {
-            "week": 2,
-            "naive": 199999.0,
-            "sick": 2,
-            "recovered": 1,
-            "hospitalized": 0
+            "t": 2,
+            "vulneraveis": 199995.0,
+            "doentes": 70.24099999999997,
+            "recuperados": 16,
+            "graves": 2,
+            "mortos": 0
         },
         {
-            "week": 3,
-            "naive": 199998.0,
-            "sick": 3,
-            "recovered": 2,
-            "hospitalized": 0
+            "t": 3,
+            "vulneraveis": 199979.0,
+            "doentes": 291.22909999999985,
+            "recuperados": 67,
+            "graves": 7,
+            "mortos": 0
         },
         {
-            "week": 4,
-            "naive": 199996.0,
-            "sick": 4,
-            "recovered": 3,
-            "hospitalized": 0
+            "t": 4,
+            "vulneraveis": 199912.0,
+            "doentes": 1208.268409999999,
+            "recuperados": 277,
+            "graves": 29,
+            "mortos": 0
         },
         {
-            "week": 5,
-            "naive": 199993.0,
-            "sick": 7,
-            "recovered": 4,
-            "hospitalized": 0
+            "t": 5,
+            "vulneraveis": 199635.0,
+            "doentes": 5014.168890999994,
+            "recuperados": 1148,
+            "graves": 121,
+            "mortos": 0
         },
         {
-            "week": 6,
-            "naive": 199989.0,
-            "sick": 10,
-            "recovered": 7,
-            "hospitalized": 0
+            "t": 6,
+            "vulneraveis": 198487.0,
+            "doentes": 20809.261344099967,
+            "recuperados": 4763,
+            "graves": 501,
+            "mortos": 0
         },
         {
-            "week": 7,
-            "naive": 199982.0,
-            "sick": 17,
-            "recovered": 10,
-            "hospitalized": 0
+            "t": 7,
+            "vulneraveis": 193724.0,
+            "doentes": 86358.23285490983,
+            "recuperados": 19769,
+            "graves": 2081,
+            "mortos": 0
         },
         {
-            "week": 8,
-            "naive": 199972.0,
-            "sick": 28,
-            "recovered": 16,
-            "hospitalized": 1
+            "t": 8,
+            "vulneraveis": 173955.0,
+            "doentes": 198042.23285490985,
+            "recuperados": 82040,
+            "graves": 8636,
+            "mortos": 0
         },
         {
-            "week": 9,
-            "naive": 199956.0,
-            "sick": 44,
-            "recovered": 27,
-            "hospitalized": 0
+            "t": 9,
+            "vulneraveis": 91915.0,
+            "doentes": 183857.23285490985,
+            "recuperados": 188140,
+            "graves": 19804,
+            "mortos": 0
         },
         {
-            "week": 10,
-            "naive": 199929.0,
-            "sick": 71,
-            "recovered": 42,
-            "hospitalized": 1
+            "t": 10,
+            "vulneraveis": 0,
+            "doentes": 101108.23285490985,
+            "recuperados": 174664,
+            "graves": 18386,
+            "mortos": 0
         },
         {
-            "week": 11,
-            "naive": 199887.0,
-            "sick": 114,
-            "recovered": 67,
-            "hospitalized": 3
+            "t": 11,
+            "vulneraveis": 0,
+            "doentes": 5055.232854909846,
+            "recuperados": 96053,
+            "graves": 10111,
+            "mortos": 0
         },
         {
-            "week": 12,
-            "naive": 199820.0,
-            "sick": 182,
-            "recovered": 108,
-            "hospitalized": 4
+            "t": 12,
+            "vulneraveis": 0,
+            "doentes": 253.23285490984563,
+            "recuperados": 4802,
+            "graves": 506,
+            "mortos": 0
         },
         {
-            "week": 13,
-            "naive": 199712.0,
-            "sick": 290,
-            "recovered": 173,
-            "hospitalized": 6
+            "t": 13,
+            "vulneraveis": 0,
+            "doentes": 12.232854909845628,
+            "recuperados": 241,
+            "graves": 25,
+            "mortos": 0
         },
         {
-            "week": 14,
-            "naive": 199539.0,
-            "sick": 464,
-            "recovered": 276,
-            "hospitalized": 9
-        },
-        {
-            "week": 15,
-            "naive": 199263.0,
-            "sick": 744,
-            "recovered": 441,
-            "hospitalized": 15
-        },
-        {
-            "week": 16,
-            "naive": 198822.0,
-            "sick": 1190,
-            "recovered": 707,
-            "hospitalized": 23
-        },
-        {
-            "week": 17,
-            "naive": 198115.0,
-            "sick": 1905,
-            "recovered": 1130,
-            "hospitalized": 38
-        },
-        {
-            "week": 18,
-            "naive": 196985.0,
-            "sick": 3046,
-            "recovered": 1810,
-            "hospitalized": 60
-        },
-        {
-            "week": 19,
-            "naive": 195175.0,
-            "sick": 4874,
-            "recovered": 2894,
-            "hospitalized": 97
-        },
-        {
-            "week": 20,
-            "naive": 192281.0,
-            "sick": 7800,
-            "recovered": 4630,
-            "hospitalized": 155
-        },
-        {
-            "week": 21,
-            "naive": 187651.0,
-            "sick": 12479,
-            "recovered": 7410,
-            "hospitalized": 248
-        },
-        {
-            "week": 22,
-            "naive": 180241.0,
-            "sick": 19967,
-            "recovered": 11855,
-            "hospitalized": 397
-        },
-        {
-            "week": 23,
-            "naive": 168386.0,
-            "sick": 31947,
-            "recovered": 18969,
-            "hospitalized": 635
-        },
-        {
-            "week": 24,
-            "naive": 149417.0,
-            "sick": 51115,
-            "recovered": 30350,
-            "hospitalized": 1017
-        },
-        {
-            "week": 25,
-            "naive": 119067.0,
-            "sick": 81784,
-            "recovered": 48559,
-            "hospitalized": 1628
-        },
-        {
-            "week": 26,
-            "naive": 70508.0,
-            "sick": 123156.0,
-            "recovered": 77695,
-            "hospitalized": 2603
-        },
-        {
-            "week": 27,
-            "naive": 0,
-            "sick": 76666.0,
-            "recovered": 116998,
-            "hospitalized": 3781
-        },
-        {
-            "week": 28,
-            "naive": 0,
-            "sick": 3833.0,
-            "recovered": 72833,
-            "hospitalized": 30
-        },
-        {
-            "week": 29,
-            "naive": 0,
-            "sick": 192.0,
-            "recovered": 3641,
-            "hospitalized": 0
-        }
-    ],
-    "4.1": [
-        {
-            "week": 0,
-            "naive": 200000.0,
-            "sick": 0,
-            "recovered": 0,
-            "hospitalized": 0
-        },
-        {
-            "week": 1,
-            "naive": 200000.0,
-            "sick": 1,
-            "recovered": 0,
-            "hospitalized": 0
-        },
-        {
-            "week": 2,
-            "naive": 200000.0,
-            "sick": 4,
-            "recovered": 1,
-            "hospitalized": 0
-        },
-        {
-            "week": 3,
-            "naive": 199999.0,
-            "sick": 17,
-            "recovered": 4,
-            "hospitalized": 0
-        },
-        {
-            "week": 4,
-            "naive": 199995.0,
-            "sick": 70,
-            "recovered": 16,
-            "hospitalized": 1
-        },
-        {
-            "week": 5,
-            "naive": 199979.0,
-            "sick": 287,
-            "recovered": 66,
-            "hospitalized": 3
-        },
-        {
-            "week": 6,
-            "naive": 199913.0,
-            "sick": 1173,
-            "recovered": 273,
-            "hospitalized": 12
-        },
-        {
-            "week": 7,
-            "naive": 199640.0,
-            "sick": 4809,
-            "recovered": 1114,
-            "hospitalized": 51
-        },
-        {
-            "week": 8,
-            "naive": 198526.0,
-            "sick": 19715,
-            "recovered": 4569,
-            "hospitalized": 205
-        },
-        {
-            "week": 9,
-            "naive": 193957.0,
-            "sick": 80835,
-            "recovered": 18729,
-            "hospitalized": 843
-        },
-        {
-            "week": 10,
-            "naive": 175228.0,
-            "sick": 197999.0,
-            "recovered": 76793,
-            "hospitalized": 3458
-        },
-        {
-            "week": 11,
-            "naive": 98435.0,
-            "sick": 185128.0,
-            "recovered": 188099,
-            "hospitalized": 7505
-        },
-        {
-            "week": 12,
-            "naive": 0,
-            "sick": 107691.0,
-            "recovered": 175872,
-            "hospitalized": 0
+            "t": 14,
+            "vulneraveis": 0,
+            "doentes": 0.23285490984562784,
+            "recuperados": 12,
+            "graves": 1,
+            "mortos": 0
         }
     ]
 }
