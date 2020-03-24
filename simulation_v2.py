@@ -74,8 +74,8 @@ class Person:
         self.r += self.v * dt
         if (self.idade % 30) == 0:
             if self.saude == 1:
-                global doentes
-                if doentes < 20:    # supondo uma capacidade hospitalar de 20%
+                global infectados
+                if infectados < 20:    # supondo uma capacidade hospitalar de 20%
                     letalidade = 4  # 4%
                 else:
                     letalidade = 20 # 20%
@@ -84,7 +84,7 @@ class Person:
                     self.saude = -1
                     self.styles =  {'edgecolor': 'g', 'facecolor':'g','fill': True}
                     recuperados += 1
-                    doentes -= 1
+                    infectados -= 1
                 else:
                     
                     global mortos
@@ -92,7 +92,7 @@ class Person:
                     self.styles =  {'edgecolor': 'k', 'facecolor':'k','fill': True}
                     self.v = 0
                     mortos += 1
-                    doentes -= 1
+                    infectados -= 1
 
             if self.saude > 0:
                 self.saude -= 1
@@ -160,20 +160,20 @@ class Simulation:
             p2.v = 0
 
     def change_saude(self, p1, p2):
-        global vulneraveis
-        global doentes
+        global suscetiveis
+        global infectados
 
         if p1.saude > 0 and p2.saude == 0 or p2.saude == -3:
             p2.saude = 7
             p2.styles = {'edgecolor': 'r', 'facecolor': 'r','fill': True}   
-            vulneraveis -= 1
-            doentes +=1
+            suscetiveis -= 1
+            infectados +=1
      
         elif p2.saude > 0 and p1.saude == 0 or p1.saude == -3:
             p1.saude = 7
             p1.styles = {'edgecolor': 'r', 'facecolor': 'r','fill': True}        
-            vulneraveis -= 1
-            doentes +=1
+            suscetiveis -= 1
+            infectados +=1
 
 
 
@@ -206,11 +206,13 @@ class Simulation:
     def advance_animation(self):
         global era
         global pause
-        
+        if era == 1:        
+	        time.sleep(10)
+
         era += 1
     
-        global doentes
-        if doentes == 0:
+        global infectados
+        if infectados == 0:
             timestr = time.strftime("%Y%m%d-%H%M%S")
             pause = True
             self.report()
@@ -219,20 +221,20 @@ class Simulation:
             return sys.exit()
             
         elif (era % 10) == 0:
-            global doentes_v
+            global infectados_v
             global recuperados_v
             global mortos_v
-            global vulneraveis_v
+            global suscetiveis_v
             
-            # global doentes
+            # global infectados
             global recuperados
             global mortos
-            global vulneraveis
+            global suscetiveis
 
-            doentes_v.append(doentes)
+            infectados_v.append(infectados)
             recuperados_v.append(recuperados)
             mortos_v.append(mortos)
-            vulneraveis_v.append(vulneraveis)
+            suscetiveis_v.append(suscetiveis)
 
             self.report()
 
@@ -265,7 +267,7 @@ class Simulation:
 
     def setup_animation(self):
         self.fig, self.ax = plt.subplots()
-        self.fig2, self.ax2 = plt.subplots()
+        #self.fig2, self.ax2 = plt.subplots()
 
         for s in ['top','bottom','left','right']:
             self.ax.spines[s].set_linewidth(2)
@@ -294,46 +296,46 @@ class Simulation:
 
     def report(self):
         global era
-        global doentes_v
+        global infectados_v
         global recuperados_v
         global mortos_v
-        global vulneraveis_v
+        global suscetiveis_v
 
         pal = ["#ff0000", "#00ff00", "#ffffff", "#000000"]
 
         x = range(1,int(era/10)+1)
 
-        data = pd.DataFrame({'doentes':doentes_v, 'recuperados':recuperados_v,'vulneraveis':vulneraveis_v, 'mortos':mortos_v }, index=x)
+        data = pd.DataFrame({'infectados':infectados_v, 'recuperados':recuperados_v,'suscetiveis':suscetiveis_v, 'mortos':mortos_v }, index=x)
  
         data_perc = data.divide(data.sum(axis=1), axis=0)
 
-        self.ax2.stackplot(x, data_perc["doentes"],  data_perc["recuperados"], data_perc["vulneraveis"], data_perc["mortos"], labels=['doentes','recuperados','vulneraveis','mortos'],colors=pal)
-        self.ax2.margins(0,0)
+        #self.ax2.stackplot(x, data_perc["infectados"],  data_perc["recuperados"], data_perc["suscetiveis"], data_perc["mortos"], labels=['infectados','recuperados','suscetiveis','mortos'],colors=pal)
+        #self.ax2.margins(0,0)
 
-        self.fig2.canvas.draw()
-        self.fig2.canvas.flush_events()
+        #self.fig2.canvas.draw()
+        #self.fig2.canvas.flush_events()
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='COVID-19 Simulação')
+    parser = argparse.ArgumentParser(description='Pandemia Simulação')
     parser.add_argument('mob', help='Mobilidade') # valor entre 0 e 100
     args = parser.parse_args()
 
     pause = False
     era = 1
 
-    doentes = 1
-    vulneraveis = 99
+    infectados = 1
+    suscetiveis = 99
     recuperados = 0
     mortos = 0
 
-    doentes_v = []
+    infectados_v = []
     recuperados_v = []
     mortos_v = []
-    vulneraveis_v = []
+    suscetiveis_v = []
 
 
-    radii = np.random.random(vulneraveis+doentes)*0.03+0.01
+    radii = np.random.random(suscetiveis+infectados)*0.03+0.01
     styles = {'edgecolor': 'C0', 'linewidth': 2, 'fill': None}
-    sim = Simulation(vulneraveis+doentes, radii, styles,int(args.mob))
+    sim = Simulation(suscetiveis+infectados, radii, styles,int(args.mob))
     sim.do_animation(save=False)

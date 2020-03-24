@@ -16,7 +16,7 @@ def write_json(data, filename='data.json'):
         json.dump(data, f, indent=4) 
 
 
-# casos = '{"pior": [{ "t":"","vulneraveis":"","doentes":"","recuperados":"","graves":""}],"melhor":[{"t":"","vulneraveis":"","doentes":"","recuperados":"","graves":""}]}'
+# casos = '{"pior": [{ "t":"","suscetiveis":"","infectados":"","recuperados":"","hospitalizados":""}],"melhor":[{"t":"","suscetiveis":"","infectados":"","recuperados":"","hospitalizados":""}]}'
 casos = '{"action":[],"noaction":[]}'
 j = json.loads(casos)
 
@@ -52,59 +52,59 @@ if __name__ == '__main__':
     output = args.O
 
     z = .1 # limite de contágio da população. variar de .01 a 1
-    vulneraveis     = 2000000*z   # vulneráveis
+    suscetiveis     = 2000000*z   # vulneráveis
     t               = 0
-    doentes         = 1
+    infectados      = 1
     mortos          = 0
-    doentes_old     = 0
-    graves  = 0
+    infectados_old  = 0
+    hospitalizados  = 0
     recuperados     = 0           # imunes
     novos_casos     = 0
 
-    while (vulneraveis > 0 or doentes > 1): # enquanto houver vuneráveis ou graves não para a simulação
+    while (suscetiveis > 0 or infectados > 1): # enquanto houver vuneráveis ou hospitalizados não para a simulação
         q = coeficiente_contagio(t)
-        if vulneraveis > 0:
-            novos_casos = doentes*q#round(pow(q,t-1)) # progressão geométrica
-            if novos_casos > vulneraveis:
-                novos_casos = vulneraveis
+        if suscetiveis > 0:
+            novos_casos = infectados*q#round(pow(q,t-1)) # progressão geométrica
+            if novos_casos > suscetiveis:
+                novos_casos = suscetiveis
 
-            c = vulneraveis - recuperados
+            c = suscetiveis - recuperados
             if c > 0: # número de vulneráveis
-                vulneraveis -= recuperados
+                suscetiveis -= recuperados
             else:
-                vulneraveis = 0
+                suscetiveis = 0
 
         else:
             novos_casos = 0
         
-        graves = round(doentes*.05)
+        hospitalizados = round(infectados*.05)
 
         # -- liberação de leitos por óbito
         if t > 1:
-            if doentes < capacidade_hospitalar:
-                mortos += round(doentes_old*.03)
-                graves -= round(doentes_old*.03)
+            if infectados < capacidade_hospitalar:
+                mortos += round(infectados_old*.03)
+                hospitalizados -= round(infectados_old*.03)
             else:
-                mortos += round(doentes_old*.06)
-                graves -= round(doentes_old*.06)
-            if graves < 0:
-                graves = 0
+                mortos += round(infectados_old*.06)
+                hospitalizados -= round(infectados_old*.06)
+            if hospitalizados < 0:
+                hospitalizados = 0
         # --
 
-        recuperados = round(doentes*.95)
-        doentes_old = doentes
-        doentes -= recuperados
-        doentes += novos_casos
+        recuperados = round(infectados*.95)
+        infectados_old = infectados
+        infectados -= recuperados
+        infectados += novos_casos
 
-        print(t,"\t\t%14d"%vulneraveis,"\t\t%14d"%novos_casos,"\t\t%14d"%doentes,"\t\t%14d"%recuperados,"\t\t%13.0f"%graves,"\t\t",q)
-        # print(t,"\t\t%14d"%doentes)
+        print(t,"\t\t%14d"%suscetiveis,"\t\t%14d"%novos_casos,"\t\t%14d"%infectados,"\t\t%14d"%recuperados,"\t\t%13.0f"%hospitalizados,"\t\t",q)
+        # print(t,"\t\t%14d"%infectados)
         
         j['action'].append({
             "t" : t,
-            "vulneraveis" : vulneraveis,
-            "doentes" : doentes,
+            "suscetiveis" : suscetiveis,
+            "infectados" : infectados,
             "recuperados" : recuperados,
-            "graves" : graves,
+            "hospitalizados" : hospitalizados,
             "mortos": mortos
         })        
 
@@ -113,58 +113,58 @@ if __name__ == '__main__':
 
 
 
-    vulneraveis     = 2000000*z   # vulneráveis
+    suscetiveis     = 2000000*z   # vulneráveis
     t               = 0
-    doentes         = 1
-    doentes_old     = 0
-    graves          = 0
+    infectados         = 1
+    infectados_old     = 0
+    hospitalizados          = 0
     mortos          = 0
     recuperados     = 0           # imunes
     novos_casos     = 0
 
-    while (vulneraveis > 0 or doentes > 1): # enquanto houver vuneráveis ou graves não para a simulação
+    while (suscetiveis > 0 or infectados > 1): # enquanto houver vuneráveis ou hospitalizados não para a simulação
         q = R0
-        if vulneraveis > 0:
-            novos_casos = doentes*q#round(pow(q,t-1)) # progressão geométrica
-            if novos_casos > vulneraveis:
-                novos_casos = vulneraveis
+        if suscetiveis > 0:
+            novos_casos = infectados*q#round(pow(q,t-1)) # progressão geométrica
+            if novos_casos > suscetiveis:
+                novos_casos = suscetiveis
 
-            c = vulneraveis - recuperados
+            c = suscetiveis - recuperados
             if c > 0: # número de vulneráveis
-                vulneraveis -= recuperados
+                suscetiveis -= recuperados
             else:
-                vulneraveis = 0
+                suscetiveis = 0
 
         else:
             novos_casos = 0
         
-        graves = round(doentes*.1)
+        hospitalizados = round(infectados*.1)
 
         # -- liberação de leitos por óbito
         if t > 1:
-            if doentes < capacidade_hospitalar:
-                mortos += round(doentes_old*.03)
-                graves -= round(doentes_old*.03)
+            if infectados < capacidade_hospitalar:
+                mortos += round(infectados_old*.03)
+                hospitalizados -= round(infectados_old*.03)
             else:
-                mortos += round(doentes_old*.06)
-                graves -= round(doentes_old*.06)
-            if graves < 0:
-                graves = 0
+                mortos += round(infectados_old*.06)
+                hospitalizados -= round(infectados_old*.06)
+            if hospitalizados < 0:
+                hospitalizados = 0
         # --
 
-        recuperados = round(doentes*.95)
-        doentes -= recuperados
-        doentes += novos_casos
+        recuperados = round(infectados*.95)
+        infectados -= recuperados
+        infectados += novos_casos
 
-        print(t,"\t\t%14d"%vulneraveis,"\t\t%14d"%novos_casos,"\t\t%14d"%doentes,"\t\t%14d"%recuperados,"\t\t%13.0f"%graves,"\t\t",q)
-        # print(t,"\t\t%14d"%doentes)
+        print(t,"\t\t%14d"%suscetiveis,"\t\t%14d"%novos_casos,"\t\t%14d"%infectados,"\t\t%14d"%recuperados,"\t\t%13.0f"%hospitalizados,"\t\t",q)
+        # print(t,"\t\t%14d"%infectados)
         
         j['noaction'].append({
             "t" : t,
-            "vulneraveis" : vulneraveis,
-            "doentes" : doentes,
+            "suscetiveis" : suscetiveis,
+            "infectados" : infectados,
             "recuperados" : recuperados,
-            "graves" : graves,
+            "hospitalizados" : hospitalizados,
             "mortos" : mortos
         })        
 

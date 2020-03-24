@@ -6,7 +6,7 @@
   color: rgb(155, 155, 155);
 }
 
-.linha_graves {
+.linha_hospitalizados {
   /* fill: #888; */
   fill: none;
   stroke: rgb(81, 81, 81);
@@ -20,7 +20,7 @@
   stroke-width: 2px;
 }
 
-.linha_doentes {
+.linha_infectados {
   fill: #F99;
   /* fill: none; */
   stroke: rgb(255, 19, 31);
@@ -63,11 +63,11 @@ var x = d3.scaleLinear().range([0, width]);
 var y = d3.scaleLinear().range([height, 0]);
 
 // define the line
-var linha_graves = d3.line()
+var linha_hospitalizados = d3.line()
   .curve(d3.curveBasis)
     // .interpolate("linear")
     .x(function(d) { return x(d.t); })
-    .y(function(d) { return y(d.graves); });
+    .y(function(d) { return y(d.hospitalizados); });
 
 var linha_recuperados = d3.line()
   .curve(d3.curveBasis)
@@ -75,11 +75,11 @@ var linha_recuperados = d3.line()
     .x(function(d) { return x(d.t); })
     .y(function(d) { return y(d.recuperados); });    
 
-var linha_doentes = d3.line()
+var linha_infectados = d3.line()
   .curve(d3.curveBasis)
     // .interpolate("linear")
     .x(function(d) { return x(d.t); })
-    .y(function(d) { return y(d.doentes); });    
+    .y(function(d) { return y(d.infectados); });    
 
 var linha_noaction = d3.line()
   .curve(d3.curveBasis)
@@ -128,11 +128,11 @@ function draw(data) {
   y.domain([0, d3.max(data1, function(d) {
 	  return Math.max(0,d.recuperados); })]);
 
-  // Add the linha_graves path.
+  // Add the linha_hospitalizados path.
   svg.append("path")
       .data([data0])
-      .attr("class", "linha_graves")
-      .attr("d", linha_graves(data0));
+      .attr("class", "linha_hospitalizados")
+      .attr("d", linha_hospitalizados(data0));
       // .transition()
       //   .duration(2000)
       //   .ease("linear")
@@ -141,12 +141,12 @@ function draw(data) {
   svg.append("path")
       .data([data1])
       .attr("class", "linha_noaction")
-      .attr("d", linha_doentes(data1));
+      .attr("d", linha_infectados(data1));
 
   svg.append("path")
       .data([data0])
       .attr("class", "linha_action")
-      .attr("d", linha_doentes(data0));
+      .attr("d", linha_infectados(data0));
 
   svg.append("path")
       .data([leitos])
