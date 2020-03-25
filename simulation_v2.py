@@ -267,7 +267,7 @@ class Simulation:
 
     def setup_animation(self):
         self.fig, self.ax = plt.subplots()
-        #self.fig2, self.ax2 = plt.subplots()
+        self.fig2, self.ax2 = plt.subplots()
 
         for s in ['top','bottom','left','right']:
             self.ax.spines[s].set_linewidth(2)
@@ -309,11 +309,11 @@ class Simulation:
  
         data_perc = data.divide(data.sum(axis=1), axis=0)
 
-        #self.ax2.stackplot(x, data_perc["infectados"],  data_perc["recuperados"], data_perc["suscetiveis"], data_perc["mortos"], labels=['infectados','recuperados','suscetiveis','mortos'],colors=pal)
-        #self.ax2.margins(0,0)
+        self.ax2.stackplot(x, data_perc["infectados"],  data_perc["recuperados"], data_perc["suscetiveis"], data_perc["mortos"], labels=['infectados','recuperados','suscetiveis','mortos'],colors=pal)
+        self.ax2.margins(0,0)
 
-        #self.fig2.canvas.draw()
-        #self.fig2.canvas.flush_events()
+        self.fig2.canvas.draw()
+        self.fig2.canvas.flush_events()
 
 
 if __name__ == '__main__':
