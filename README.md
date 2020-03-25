@@ -7,9 +7,9 @@ Este repositório contem algumas simulações simples da dinamica de contágio i
 
 `./python simulation_v2.py 30`  
 
-Quando infectados e suscetíveis interagem, uma parcela é removida da categoria suscetíveis e colocada na categoria infectados.
-Parte dos infectados se curam em um dado intervalo de tempo. Estes são removidos da categoria infectados e colocados na categoria recuperados.  
-Outra parte dos infectados morrem devido à doença. Estes são removidos da categoria infectados e colocados na categoria mortos.
+Quando infectados (vermelho) e suscetíveis (branco) interagem, uma parcela é removida da categoria suscetíveis e colocada na categoria infectados.
+Parte dos infectados se curam em um dado intervalo de tempo. Estes são removidos da categoria infectados e colocados na categoria recuperados (verde).  
+Outra parte dos infectados morrem devido à doença. Estes são removidos da categoria infectados e colocados na categoria mortos (preto).
 Os curados desenvolvem imunidade e, portanto, não são colocados de volta na categoria suscetível.  
   
 Exemplos de saída:  
