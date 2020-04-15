@@ -1,3 +1,7 @@
+'''
+    geraldo@selvadebits.com.br
+    14/04/2020 mudanças anteriores se vizeram necessárias em razão da ausência de um padrão na nomenclatura adotada pelo ministérios. hj a UF mudou 'sigla' para 'estado'
+'''
 import glob, os, csv, json, time #, pdfkit
 import util
 from pymongo import MongoClient
@@ -58,11 +62,16 @@ while (True):
 
                 csvreader = csv.DictReader(csvfile, delimiter=';')
                 for row in csvreader:
-                    UF = row['sigla']
                     try:
-                        dados.find_and_modify(query={'UF':UF}, update={"$push": {'data':row['data'],'casosNovos':row['casosNovos'],'obitosNovos':row['obitosNovos'],'casosAcumulados':row['casosAcumulados'],'obitosAcumulados':row['obitosAcumulados']}}, upsert=True, full_response= True)
+                        UF = row['sigla']
                     except:
-                        dados.find_and_modify(query={'UF':UF}, update={"$push": {'data':row['date'],'casosNovos':row['cases_inc'],'obitosNovos':row['deaths_inc'],'casosAcumulados':row['cases'],'obitosAcumulados':row['deaths']}}, upsert=True, full_response= True)                                                
+                        UF = row['estado']
+                    try:
+                        #recuperados = int(row['casosAcumulados']) - int(row['obitosNovos']) - int(row['casosNovos'])
+                        dados.find_and_modify(query={'UF':UF}, update={"$push": {'data':row['data'],'casosNovos':row['casosNovos'],'obitosNovos':row['obitosNovos'],'casosAcumulados':row['casosAcumulados'],'obitosAcumulados':row['obitosAcumulados'],'recuperados':recuperados}}, upsert=True, full_response= True)
+                    except:
+                        #recuperados = int(row['cases']) - int(row['deaths_inc']) - int(row['cases_inc'])
+                        dados.find_and_modify(query={'UF':UF}, update={"$push": {'data':row['date'],'casosNovos':row['cases_inc'],'obitosNovos':row['deaths_inc'],'casosAcumulados':row['cases'],'obitosAcumulados':row['deaths'],'recuperados':recuperados}}, upsert=True, full_response= True)                                                
             os.remove(fname)
         break
     except IOError:
